@@ -3,30 +3,27 @@
 const net = require("net");
 const WebSocket = require("ws");
 
-//var tcp_HOST = "localhost";
-var tcp_HOST = "nerdbox.de";
-//var tcp_PORT = 8024;
+var tcp_HOST = "localhost";
 var tcp_PORT = 22;
 
 var wss = new WebSocket.Server({
-	port: 8023
+	port: 8022
 });
 
 wss.on("connection", function(ws, req) {
 	var tcpClient = new net.Socket();
-	//tcpClient.setEncoding("ascii");
 	tcpClient.setKeepAlive(true);
 
 	var buffer = [];
 	tcpClient.connect(tcp_PORT, tcp_HOST, function() {
-		console.info('CONNECTED TO : ' + tcp_HOST + ':' + tcp_PORT);
+		console.log("CONNECTED TO:", tcp_HOST + ':' + tcp_PORT);
 		buffer.forEach(function(b) {
 			if (tcpClient.readyState === "open")
 				tcpClient.write(b);
 		});
 		buffer = null;
 
-		tcpClient.on('data', function(data) {
+		tcpClient.on("data", function(data) {
 			if (ws.readyState === WebSocket.OPEN)
 				ws.send(data);
 		});
@@ -34,9 +31,10 @@ wss.on("connection", function(ws, req) {
 			console.log("tcp error", err);
 		});
 
-		tcpClient.on('end', function(data) {
+		tcpClient.on("end", function(data) {
 			console.log("TCP closed.");
-			ws.close();
+			if (ws.readyState === WebSocket.OPEN)
+				ws.close();
 		});
 	});
 
@@ -58,5 +56,7 @@ wss.on("connection", function(ws, req) {
 	});
 	ws.on("close", function(err) {
 		console.log("WebSocket closed.");
+		if (tcpClient.readyState === "open")
+			tcpClient.end();
 	});
 });
