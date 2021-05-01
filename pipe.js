@@ -5,8 +5,7 @@ const WebSocket = require("ws");
 
 console.error = ()=>{};
 
-//var wpath = "wss://sw.nerdbox.de/ds/8254jzm9s5nh.socket";
-var wpath = "ws://localhost:8023";
+var wpath = process.argv[2];
 
 var buffer = [];
 var ws = new WebSocket(wpath);

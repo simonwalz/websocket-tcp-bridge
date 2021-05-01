@@ -14,15 +14,16 @@ SSHC  => TCP-Server/WS-Client  => WS-Server/TCP-Client => SSHD
 
 Client:
 
-```ssh_config
+```ssh-config
 Host ws-myhost
 	HostName myhost.example.com
-	ProxyCommand PATH_TO_WEBSOCKET_TCP_BRIDGE/pipe.js wss://%h
+	ProxyCommand /path-to-websocket-tcp-bridge/pipe.js wss://%h/ws/n89g8ssc5jlzs5vn
 
 
 ```
 
 Server (Apache):
+
 ```apache
 SSLProxyEngine On
 ProxyRequests Off
@@ -31,3 +32,8 @@ ProxyRequests Off
 </Location>
 ```
 
+Start daemon via screen and cron:
+
+```crontab
+@reboot screen -d -m -S ws-tcp-bridge /path-to-websocket-tcp-bridge/index.js
+```
