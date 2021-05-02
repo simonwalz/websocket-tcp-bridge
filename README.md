@@ -2,14 +2,22 @@
 
 These tools help to bridge connections through a (WebSocket) server.
 
-## Bridge TCP connections:
 
 Concept (here SSH connections):
 
 ```
-         client.js                index.js
-SSHC  => TCP-Server/WS-Client  => WS-Server/TCP-Client => SSHD
+            client.js                index.js
+   SSHC  => TCP-Server/WS-Client  => WS-Server/TCP-Client => SSHD
 ```
+
+```
+            pipe.js             index.js
+  SSHC   => STDIO/WS-Client  => WS-Server/TCP-Client => SSHD
+  via
+ Proxy-
+Command
+```
+
 
 
 ## Commands
@@ -43,16 +51,6 @@ Start daemon via screen and cron:
 ```
 
 
-### Map TCP server to WebSocket
-
-`client.js [localport] [websocketpath]`
-
-| Name | Description |
-|------|-------------|
-| `localport` | Local port<br/>Example: `8022` |
-| `websocketpath` | Path to the WebSocket server provided by the `index.js` command.<br/>Example: `ws://myserver/`<br/>Example: `wss://myapacheserver/ws/n89g8ssc5jlzs5vn` |
-
-
 ### Map stdio to WebSocket
 
 Command: `pipe.js [websocketpath]`
@@ -68,3 +66,13 @@ Host ws-myhost
 	HostName myhost.example.com
 	ProxyCommand /path-to-websocket-tcp-bridge/pipe.js wss://%h/ws/n89g8ssc5jlzs5vn
 ```
+
+
+### Map TCP server to WebSocket
+
+`client.js [localport] [websocketpath]`
+
+| Name | Description |
+|------|-------------|
+| `localport` | Local port<br/>Example: `8022` |
+| `websocketpath` | Path to the WebSocket server provided by the `index.js` command.<br/>Example: `ws://myserver/`<br/>Example: `wss://myapacheserver/ws/n89g8ssc5jlzs5vn` |
