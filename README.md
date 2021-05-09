@@ -76,3 +76,10 @@ Host ws-myhost
 |------|-------------|
 | `localport` | Local port<br/>Example: `8022` |
 | `websocketpath` | Path to the WebSocket server provided by the `index.js` command.<br/>Example: `ws://myserver/`<br/>Example: `wss://myapacheserver/ws/n89g8ssc5jlzs5vn` |
+
+
+## License
+
+This software is released under the MIT license.
+
+Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
