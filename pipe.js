@@ -5,6 +5,11 @@ const WebSocket = require("ws");
 
 console.error = ()=>{};
 
+if (process.argv.length < 3) {
+	console.log("Usage: prog wpath");
+	process.exit(2);
+}
+
 var wpath = process.argv[2];
 
 var buffer = [];

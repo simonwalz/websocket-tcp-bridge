@@ -4,8 +4,14 @@ const net = require("net");
 const WebSocket = require("ws");
 
 //var wpath = "wss://sw.nerdbox.de/ds/8254jzm9s5nh.socket";
-var wpath = "ws://localhost:8023";
-var port = 8022;
+
+if (process.argv.length < 4) {
+	console.log("Usage: prog localport wpath");
+	process.exit(2);
+}
+
+var port = +process.argv[2];
+var wpath = process.argv[3];
 
 const server = new net.Server();
 

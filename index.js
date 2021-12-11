@@ -3,11 +3,19 @@
 const net = require("net");
 const WebSocket = require("ws");
 
-var tcp_HOST = "localhost";
-var tcp_PORT = 22;
+if (process.argv.length < 5) {
+	console.log("Usage: prog localport remotehost remoteport");
+	process.exit(2);
+}
+
+var localport = +process.argv[2];
+var tcp_HOST =  process.argv[3];
+var tcp_PORT =  +process.argv[4];
+
+//console.log(localport, tcp_HOST, tcp_PORT);
 
 var wss = new WebSocket.Server({
-	port: 8022
+	port: localport
 });
 
 wss.on("connection", function(ws, req) {
