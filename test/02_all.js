@@ -43,43 +43,49 @@ test(name + 'wait for connection', function (t) {
 	wss.on("error", function(err) {
 		throw err;
 	});
-	cp_c = child_process.execFile(__dirname + "/../client.js",
-			[port_tcp, "ws://localhost:" + port_ws1], {
-		timeout: 10*1000,
-		stdio: ['pipe', 'pipe', 'inherit']
-	});
-	cp_c.on("error", function(err) {
-		throw err;
-	});
-	cp_c.on("close", function(err) {
-		console.log("C closed");
-	});
-	cp_i = child_process.execFile(__dirname + "/../index.js",
-			[port_ws2, "localhost", port_tcp], {
-		timeout: 10*1000,
-		stdio: ['pipe', 'pipe', 'inherit']
-	});
-	cp_i.on("error", function(err) {
-		throw err;
-	});
-	cp_i.on("close", function(err) {
-		console.log("I closed");
-	});
-	cp = child_process.execFile(__dirname + "/../pipe.js",
-			["ws://localhost:"+port_ws2], {
-		timeout: 10*1000,
-		stdio: ['pipe', 'pipe', 'inherit']
-	});
-	cp.on("error", function(err) {
-		throw err;
-	});
-	cp.on("close", function(err) {
-		console.log("CP closed");
-	});
+	setTimeout(function() {
+		cp_c = child_process.execFile(__dirname + "/../client.js",
+				[port_tcp, "ws://localhost:" + port_ws1], {
+			timeout: 10*1000,
+			stdio: ['pipe', 'pipe', 'inherit']
+		});
+		cp_c.on("error", function(err) {
+			throw err;
+		});
+		cp_c.on("close", function(err) {
+			console.log("C closed");
+		});
+	}, 200);
+	setTimeout(function() {
+		cp_i = child_process.execFile(__dirname + "/../index.js",
+				[port_ws2, "localhost", port_tcp], {
+			timeout: 10*1000,
+			stdio: ['pipe', 'pipe', 'inherit']
+		});
+		cp_i.on("error", function(err) {
+			throw err;
+		});
+		cp_i.on("close", function(err) {
+			console.log("I closed");
+		});
+	}, 300);
+		setTimeout(function() {
+		cp = child_process.execFile(__dirname + "/../pipe.js",
+				["ws://localhost:"+port_ws2], {
+			timeout: 10*1000,
+			stdio: ['pipe', 'pipe', 'inherit']
+		});
+		cp.on("error", function(err) {
+			throw err;
+		});
+		cp.on("close", function(err) {
+			console.log("CP closed");
+		});
+	}, 400);
 
 	setTimeout(function() {
 		t.ok(1, "opened");
-	}, 100);
+	}, 500);
 });
 
 
