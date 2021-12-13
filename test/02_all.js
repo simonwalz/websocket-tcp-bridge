@@ -10,15 +10,21 @@
  * (* = internal)
  */
 
+var name = "02 all: ";
+var port = Math.floor(Math.random() * 40000)+8000;
+var port_ws1 = port;
+var port_tcp = port+1;
+var port_ws2 = port+2;
+
 const test = require('tape');
 
 const WebSocket = require("ws");
 const child_process = require("child_process");
 
-const wss = new WebSocket.Server({ port: 8003 });
+const wss = new WebSocket.Server({ port: port_ws1 });
 let cp;
 
-test('wait for connection', function (t) {
+test(name + 'wait for connection', function (t) {
 	t.plan(1);
 
 	wss.on('connection', function connection(ws) {
@@ -29,7 +35,7 @@ test('wait for connection', function (t) {
 		});
 	});
 	cp_c = child_process.fork(__dirname + "/../client.js",
-			[8004, "ws://localhost:8003"], {
+			[port_tcp, "ws://localhost:" + port_ws1], {
 		timeout: 10*1000,
 		stdio: 'pipe'
 	});
@@ -37,7 +43,7 @@ test('wait for connection', function (t) {
 		throw err;
 	});
 	cp_i = child_process.fork(__dirname + "/../index.js",
-			[8005, "localhost", 8004], {
+			[port_ws2, "localhost", port_tcp], {
 		timeout: 10*1000,
 		stdio: 'pipe'
 	});
@@ -45,7 +51,7 @@ test('wait for connection', function (t) {
 		throw err;
 	});
 	cp = child_process.fork(__dirname + "/../pipe.js",
-			["ws://localhost:8005"], {
+			["ws://localhost:"+port_ws2], {
 		timeout: 10*1000,
 		stdio: 'pipe'
 	});
@@ -59,12 +65,12 @@ test('wait for connection', function (t) {
 });
 
 
-test('send message', function (t) {
+test(name + 'send message', function (t) {
 	t.plan(1);
 
 	let tid = setTimeout(function() {
 		t.ok(0, "timeout");
-	}, 2000);
+	}, 5000);
 
 	cp.stdout.on("data", function(d) {
 		clearTimeout(tid);
@@ -74,7 +80,7 @@ test('send message', function (t) {
 
 	cp.stdin.write("Hallo Welt\n");
 });
-test('close test', function (t) {
+test(name + 'close test', function (t) {
 	t.plan(1);
 	setTimeout(function() {
 		cp.kill('SIGHUP');

@@ -3,15 +3,19 @@
  * This file tests "pipe.js" and the test functions.
  */
 
+var name = "01 pipe: ";
+
 const test = require('tape');
 
 const WebSocket = require("ws");
 const child_process = require("child_process");
 
-const wss = new WebSocket.Server({ port: 8001 });
+var port = Math.floor(Math.random() * 40000)+8000;
+
+const wss = new WebSocket.Server({ port: port });
 let cp;
 
-test('wait for connection', function (t) {
+test(name + 'wait for connection', function (t) {
 	t.plan(1);
 
 	wss.on('connection', function connection(ws) {
@@ -22,7 +26,7 @@ test('wait for connection', function (t) {
 		});
 	});
 	cp = child_process.fork(__dirname + "/../pipe.js",
-			["ws://localhost:8001"], {
+			["ws://localhost:" + port], {
 		timeout: 10*1000,
 		stdio: 'pipe'
 	});
@@ -36,17 +40,22 @@ test('wait for connection', function (t) {
 });
 
 
-test('send message', function (t) {
+test(name + 'send message', function (t) {
 	t.plan(1);
 
+	let tid = setTimeout(function() {
+		t.ok(0, "timeout");
+	}, 5000);
+
 	cp.stdout.on("data", function(d) {
+		clearTimeout(tid);
 		//console.log("[stdout] data", d.toString());
 		t.equal(d.toString(), "Hallo Welt\n", "recieve message");
 	});
 
 	cp.stdin.write("Hallo Welt\n");
 });
-test('close test', function (t) {
+test(name + 'close test', function (t) {
 	t.plan(1);
 	setTimeout(function() {
 		cp.kill('SIGHUP');
