@@ -29,34 +29,52 @@ test(name + 'wait for connection', function (t) {
 
 	wss.on('connection', function connection(ws) {
 		//console.log("[ws] connected");
+		ws.on("error", function(err) {
+			throw err;
+		});
 		ws.on('message', function message(data) {
 			//console.log("[ws] data", data.toString());
 			ws.send(data);
 		});
+		ws.on("close", function(err) {
+			console.log("ws closed");
+		});
 	});
-	cp_c = child_process.fork(__dirname + "/../client.js",
+	wss.on("error", function(err) {
+		throw err;
+	});
+	cp_c = child_process.execFile(__dirname + "/../client.js",
 			[port_tcp, "ws://localhost:" + port_ws1], {
 		timeout: 10*1000,
-		stdio: 'pipe'
+		stdio: ['pipe', 'pipe', 'inherit']
 	});
 	cp_c.on("error", function(err) {
 		throw err;
 	});
-	cp_i = child_process.fork(__dirname + "/../index.js",
+	cp_c.on("close", function(err) {
+		console.log("C closed");
+	});
+	cp_i = child_process.execFile(__dirname + "/../index.js",
 			[port_ws2, "localhost", port_tcp], {
 		timeout: 10*1000,
-		stdio: 'pipe'
+		stdio: ['pipe', 'pipe', 'inherit']
 	});
 	cp_i.on("error", function(err) {
 		throw err;
 	});
-	cp = child_process.fork(__dirname + "/../pipe.js",
+	cp_i.on("close", function(err) {
+		console.log("I closed");
+	});
+	cp = child_process.execFile(__dirname + "/../pipe.js",
 			["ws://localhost:"+port_ws2], {
 		timeout: 10*1000,
-		stdio: 'pipe'
+		stdio: ['pipe', 'pipe', 'inherit']
 	});
 	cp.on("error", function(err) {
 		throw err;
+	});
+	cp.on("close", function(err) {
+		console.log("CP closed");
 	});
 
 	setTimeout(function() {

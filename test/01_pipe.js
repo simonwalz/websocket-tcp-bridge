@@ -25,10 +25,10 @@ test(name + 'wait for connection', function (t) {
 			ws.send(data);
 		});
 	});
-	cp = child_process.fork(__dirname + "/../pipe.js",
+	cp = child_process.execFile(__dirname + "/../pipe.js",
 			["ws://localhost:" + port], {
 		timeout: 10*1000,
-		stdio: 'pipe'
+		stdio: ['pipe', 'pipe', 'inherit']
 	});
 	cp.on("error", function(err) {
 		throw err;
