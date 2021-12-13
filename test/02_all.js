@@ -54,7 +54,7 @@ test('wait for connection', function (t) {
 	});
 
 	setTimeout(function() {
-		t.ok(1, "closed");
+		t.ok(1, "opened");
 	}, 100);
 });
 
@@ -62,7 +62,12 @@ test('wait for connection', function (t) {
 test('send message', function (t) {
 	t.plan(1);
 
+	let tid = setTimeout(function() {
+		t.ok(0, "timeout");
+	}, 2000);
+
 	cp.stdout.on("data", function(d) {
+		clearTimeout(tid);
 		//console.log("[stdout] data", d.toString());
 		t.equal(d.toString(), "Hallo Welt\n", "recieve message");
 	});

@@ -31,7 +31,7 @@ test('wait for connection', function (t) {
 	});
 
 	setTimeout(function() {
-		t.ok(1, "closed");
+		t.ok(1, "opened");
 	}, 100);
 });
 
