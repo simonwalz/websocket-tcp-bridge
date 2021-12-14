@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 /*
- * This file tests "pipe.js", "client.js" and "index.js" in one overall test
+ * This file tests "pipe.js", "client.js" and "server.js" in one overall test
  *
  * All programs are bind to each other:
- * (stdio*) > pipe.js > (WS server) > index.js > (TCP server) >
+ * (stdio*) > pipe.js > (WS server) > server.js > (TCP server) >
  * client.js > (WS echo server*)
  *
  * (* = internal)
@@ -57,7 +57,7 @@ test(name + 'wait for connection', function (t) {
 		});
 	}, 200);
 	setTimeout(function() {
-		cp_i = child_process.execFile(__dirname + "/../index.js",
+		cp_i = child_process.execFile(__dirname + "/../server.js",
 				[port_ws2, "localhost", port_tcp], {
 			timeout: 10*1000,
 			stdio: ['pipe', 'pipe', 'inherit']

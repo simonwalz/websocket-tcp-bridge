@@ -2,7 +2,12 @@
   "name": "websocket-ssh-bridge",
   "version": "1.0.0",
   "description": "Bridge TCP Connections through a WebSocket Server",
-  "main": "index.js",
+  "main": "server.js",
+  "bin": {
+    "wsbd": "server.js",
+    "wsbc": "client.js",
+    "wsbp": "pipe.js"
+  },
   "scripts": {
     "test": "tape 'test/??_*.js'"
   },

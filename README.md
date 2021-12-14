@@ -6,12 +6,12 @@ These tools help to bridge connections through a (WebSocket) server.
 Concept (here SSH connections):
 
 ```
-            client.js                index.js
+            client.js                server.js
    SSHC  => TCP-Server/WS-Client  => WS-Server/TCP-Client => SSHD
 ```
 
 ```
-            pipe.js             index.js
+            pipe.js             server.js
   SSHC   => STDIO/WS-Client  => WS-Server/TCP-Client => SSHD
   via
  Proxy-
@@ -25,7 +25,7 @@ Command
 
 ### Map WebSocket server to TCP client
 
-Command: `index.js [localport] [remotehost] [remoteport]`
+Command: `server.js [localport] [remotehost] [remoteport]`
 
 | Name | Description |
 |------|-------------|
@@ -47,7 +47,7 @@ ProxyRequests Off
 Start daemon via screen and cron:
 
 ```crontab
-@reboot screen -d -m -S ws-tcp-bridge /path-to-websocket-tcp-bridge/index.js
+@reboot screen -d -m -S ws-tcp-bridge /path-to-websocket-tcp-bridge/server.js
 ```
 
 
@@ -57,7 +57,7 @@ Command: `pipe.js [websocketpath]`
 
 | Name | Description |
 |------|-------------|
-| `websocketpath` | Path to the WebSocket server provided by the `index.js` command.<br/>Example: `ws://myserver/`<br/>Example: `wss://myapacheserver/ws/n89g8ssc5jlzs5vn` |
+| `websocketpath` | Path to the WebSocket server provided by the `server.js` command.<br/>Example: `ws://myserver/`<br/>Example: `wss://myapacheserver/ws/n89g8ssc5jlzs5vn` |
 
 Configure SSH to use the pipe program:
 
@@ -75,7 +75,7 @@ Host ws-myhost
 | Name | Description |
 |------|-------------|
 | `localport` | Local port<br/>Example: `8022` |
-| `websocketpath` | Path to the WebSocket server provided by the `index.js` command.<br/>Example: `ws://myserver/`<br/>Example: `wss://myapacheserver/ws/n89g8ssc5jlzs5vn` |
+| `websocketpath` | Path to the WebSocket server provided by the `server.js` command.<br/>Example: `ws://myserver/`<br/>Example: `wss://myapacheserver/ws/n89g8ssc5jlzs5vn` |
 
 
 ## License
