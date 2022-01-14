@@ -14,7 +14,7 @@
   "author": "Simon Walz",
   "license": "MIT",
   "dependencies": {
-    "ws": "^8.4.0"
+    "ws": "^8.4.1"
   },
   "devDependencies": {
     "tape": "^5.4.0"
