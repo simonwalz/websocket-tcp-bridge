@@ -11,8 +11,8 @@ Concept (here SSH connections):
 ```
 
 ```
-            pipe.js             server.js
-  SSHC   => STDIO/WS-Client  => WS-Server/TCP-Client => SSHD
+            pipe.js                  server.js
+  SSHC   => STDIO/WS-Client       => WS-Server/TCP-Client => SSHD
   via
  Proxy-
 Command
