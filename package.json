@@ -1,6 +1,6 @@
 {
   "name": "websocket-ssh-bridge",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Bridge TCP Connections through a WebSocket Server",
   "main": "server.js",
   "bin": {
