@@ -8,6 +8,10 @@
     "wsbc": "client.js",
     "wsbp": "pipe.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/simonwalz/websocket-tcp-bridge.git"
+  },
   "scripts": {
     "test": "tape 'test/??_*.js'"
   },
